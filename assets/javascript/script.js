@@ -1,6 +1,7 @@
 // Wait for the DOM to finish loading before running the game
 // Get the button elements and add event listeners to them
 
+
 document.addEventListener("DOMContentLoaded", function() {
     let buttons = document.getElementsByTagName("button");
 
@@ -15,10 +16,15 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    document.getElementById("answer-box").addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+            checkAnswer();
+        }
+    });
+
     runGame("addition");
 
 });
-
 /**
  * The main game "loop", called when the script is first loaded
  * and after the user's answer has been processed
@@ -38,6 +44,8 @@ function runGame(gameType) {
         displaySubtractQuestion(num1, num2);
     } else if (gameType === "multiply") {
         displayMultiplyQuestion(num1, num2);
+    } else if (gameType === "division") {
+        displayDivisionQuestion(num1, num2);    
     } else {
         alert(`Unknown game type: ${gameType}`);
         throw `Unknown game type: ${gameType}. Aborting!`;
@@ -81,7 +89,9 @@ function calculateCorrectAnswer() {
         return [operand1 + operand2, "addition"];
     } else if (operator === "-") {
         return [operand1 - operand2, "subtract"];
-    }   
+    }  else if (operator === "/") {
+        return [operand1 / operand2, "division"]
+    } 
     else if (operator === "x") {
         return [operand1 * operand2, "multiply"];
     } else {
@@ -125,6 +135,13 @@ function displaySubtractQuestion(operand1, operand2) {
     document.getElementById("operand1").textContent = operand1 > operand2 ? operand1 : operand2;
     document.getElementById("operand2").textContent = operand1 > operand2 ? operand2 : operand1;
     document.getElementById('operator').textContent = "-";
+
+}
+
+function displayDivisionQuestion(operand1) {
+    document.getElementById('operand1').textContent = operand1 * (Math.ceil(Math.random()*35));
+    document.getElementById('operand2').textContent = operand1;
+    document.getElementById('operator').textContent = "/";
 
 }
 
